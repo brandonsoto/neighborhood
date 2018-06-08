@@ -15,6 +15,10 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+    res.send({test: "test"});
+});
+
 app.post('/todos', authenticate, (req, res) => {
   var todo = new Todo({
     text: req.body.text,

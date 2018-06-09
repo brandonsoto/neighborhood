@@ -1,12 +1,14 @@
 {
   "test": {
-    "PORT": 3000,
+    "PORT": 3001,
     "MONGODB_URI": "mongodb://localhost:27017/NeighborhoodTest",
-    "JWT_SECRET": "poijasdf98435jpgfdpoij3"
+    "JWT_SECRET": "poijasdf98435jpgfdpoij3",
+    "ROUNDS": 10
   },
   "development": {
     "PORT": 3000,
     "MONGODB_URI": "mongodb://localhost:27017/NeighborhoodDev",
-    "JWT_SECRET": "pojiaj234oi234oij234oij4"
+    "JWT_SECRET": "pojiaj234oi234oij234oij4",
+    "ROUNDS": 10
   }
 }

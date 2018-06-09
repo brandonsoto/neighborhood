@@ -15,9 +15,10 @@ var app = express();
 app.use(bodyParser.json());
 
 app.post('/users', async (req, res) => {
+    const body = _.pick(req.body, ['email', 'password']);
+    const user = new User(body);
+
     try {
-        const body = _.pick(req.body, ['email', 'password']);
-        const user = new User(body);
         await user.save();
         res.send(user);
     } catch(err) {

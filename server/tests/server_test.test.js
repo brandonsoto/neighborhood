@@ -35,25 +35,25 @@ describe('POST /users', () => {
       });
   });
 
-  // it('should return validation errors if request invalid', (done) => {
-  //   request(app)
-  //     .post('/users')
-  //     .send({
-  //       email: 'and',
-  //       password: '123'
-  //     })
-  //     .expect(400)
-  //     .end(done);
-  // });
+  it('should return validation errors if request invalid', (done) => {
+    request(app)
+      .post('/users')
+      .send({
+        email: 'and',
+        password: '123'
+      })
+      .expect(400)
+      .end(done);
+  });
 
-  // it('should not create user if email in use', (done) => {
-  //   request(app)
-  //     .post('/users')
-  //     .send({
-  //       email: users[0].email,
-  //       password: 'Password123!'
-  //     })
-  //     .expect(400)
-  //     .end(done);
-  // });
+  it('should not create user if email in use', (done) => {
+    request(app)
+      .post('/users')
+      .send({
+        email: users[0].email,
+        password: 'Password123!'
+      })
+      .expect(400)
+      .end(done);
+  });
 });

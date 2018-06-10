@@ -90,29 +90,6 @@ describe('GET /profile', () => {
   });
 });
 
-describe('GET /login', () => {
-  it('should allow a user to login', (done) => {
-    request(app)
-      .get('/login')
-      .send({
-        email: users[0].email,
-        password: users[0].password
-      })
-      .expect(200)
-      .end(done);
-  });
-  it('should not allow a non-user to login', (done) => {
-    request(app)
-      .get('/login')
-      .send({
-        email: "unknown.email.com",
-        password: "unknownUser"
-      })
-      .expect(400)
-      .end(done);
-  });
-});
-
 describe('POST /login', () => {
   it('should redirect to login on failed login', (done) => {
     request(app)

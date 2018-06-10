@@ -61,23 +61,6 @@ app.get('/profile', authenticateMiddleware(), (req, res) => {
     res.send();
 });
 
-app.get('/login', (req, res) => {
-    const body = _.pick(req.body, ["email", "password"]);
-    User.findByCredentials(body.email, body.password)
-        .then((user) => {
-            req.login(user._id, (err) => {
-                if (err) {
-                    res.status(400).send(err);
-                } else {
-                    res.send(user);
-                }
-            });
-        })
-        .catch((err) => {
-            res.status(400).send(err);
-        });
-});
-
 app.post('/login', passport.authenticate(
     'local', {
         successRedirect: '/profile',

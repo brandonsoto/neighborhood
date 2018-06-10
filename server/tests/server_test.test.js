@@ -4,6 +4,7 @@ const _ = require('lodash');
 const {ObjectID} = require('mongodb');
 
 const {app, mongoStore} = require('./../server_test');
+const {mongoose} = require('../db/mongoose');
 const {User} = require('./../models/user');
 const {users, populateUsers} = require('./seed/seed');
 
@@ -16,6 +17,11 @@ beforeEach((done) => {
   });
 });
 beforeEach(populateUsers);
+after((done) => {
+  mongoose.connection.close()
+    .then(() => done())
+    .catch((err) => done(err));
+});
 
 describe('POST /users', () => {
   it('should create a user', (done) => {

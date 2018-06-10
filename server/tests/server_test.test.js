@@ -7,8 +7,13 @@ const {app, mongoStore} = require('./../server_test');
 const {User} = require('./../models/user');
 const {users, populateUsers} = require('./seed/seed');
 
-beforeEach(() => {
-  mongoStore.clear((err) => {});
+beforeEach((done) => {
+  mongoStore.clear((err) => {
+    if (err) {
+      done(err);
+    }
+    done();
+  });
 });
 beforeEach(populateUsers);
 

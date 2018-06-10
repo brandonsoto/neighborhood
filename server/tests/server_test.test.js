@@ -1,5 +1,6 @@
 const expect = require('expect');
 const request = require('supertest');
+const _ = require('lodash');
 const {ObjectID} = require('mongodb');
 
 const {app} = require('./../server_test');
@@ -43,6 +44,11 @@ describe('POST /users', () => {
         password: '123'
       })
       .expect(400)
+      .expect((res) => {
+        const body = _.pick(res.body, ["errors"]);
+        expect(body.errors.email).toExist();
+        expect(body.errors.password).toExist();
+      })
       .end(done);
   });
 

@@ -5,25 +5,24 @@ const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
 
-var {mongoose} = require('./db/mongoose');
-var {Todo} = require('./models/todo');
-var {User} = require('./models/user');
-const port = process.env.PORT;
-var LocalStrategy = require('passport-local').Strategy;
+const middle = require('./middleware/authenticate');
+const {mongoose} = require('./db/mongoose');
+const {User} = require('./models/user');
+
 var mongoStore = new MongoStore({mongooseConnection: mongoose.connection});
-var appSession = session({
+
+var app = express();
+app.use(bodyParser.json());
+app.use(session({
     secret: process.env.JWT_SECRET,
     resave: false,
     saveUninitialized: true,
     store: mongoStore
-});
-
-var app = express();
-app.use(bodyParser.json());
-app.use(appSession);
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
@@ -51,13 +50,10 @@ passport.use(new LocalStrategy(
 
 
 app.get('/', (req, res) => {
-    console.log(`User : ${req.user}`);
-    console.log(`User authenticated: ${req.isAuthenticated()}`);
-    console.log("GET / cookies: " + JSON.stringify(req.cookies));
     res.send();
 });
 
-app.get('/profile', authenticateMiddleware(), (req, res) => {
+app.get('/profile', middle.authenticate(), (req, res) => {
     res.send();
 });
 
@@ -105,18 +101,8 @@ passport.deserializeUser(function (user_id, done) {
     });
 });
 
-function authenticateMiddleware () {
-    return (req, res, next) => {
-        if (req.isAuthenticated()) {
-            return next();
-        } else {
-            res.status(400).send();
-        }
-    };
-};
-
-app.listen(port, () => {
-    console.log(`Started server at port ${port}`);
+app.listen(process.env.PORT, () => {
+    console.log(`Started server at port ${process.env.PORT}`);
 });
 
-module.exports = {app, mongoStore};
+module.exports = {app, mongoStore, mongoose};
